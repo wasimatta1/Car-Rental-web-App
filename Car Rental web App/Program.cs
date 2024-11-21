@@ -12,7 +12,9 @@ namespace Car_Rental_web_App
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            // builder.Services.AddRazorPages();
+
+            builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
@@ -33,6 +35,8 @@ namespace Car_Rental_web_App
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
             var app = builder.Build();
 
@@ -51,7 +55,7 @@ namespace Car_Rental_web_App
 
             app.UseAuthorization();
 
-            app.MapRazorPages();
+            app.MapDefaultControllerRoute();
 
             app.Run();
         }

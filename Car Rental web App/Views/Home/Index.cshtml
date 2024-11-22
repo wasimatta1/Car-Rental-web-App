@@ -1,8 +1,38 @@
-﻿@{
-    ViewData["Title"] = "Home page";
+﻿@using Car_Rental_web_App.Models;
+@model IEnumerable<Car>;
+
+@{
+    ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Browse our car collection:</p>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@car.ImageUrl" class="card-img-top" alt="@car.Model">
+                    <div class="card-body">
+                        <h5 class="card-title">@car.Make @car.Model (@car.Year)</h5>
+                        <p class="card-text">@car.Description</p>
+                        <p class="card-text"><strong>Location:</strong> @car.Location</p>
+                        <p class="card-text"><strong>Price Per Day:</strong> $@car.PricePerDay</p>
+                        <p class="card-text">
+                            <strong>Status:</strong>
+                            @(car.IsAvailable ? "Available" : "Not Available")
+                        </p>
+                        @if (car.IsAvailable)
+                        {
+                            <a href="#" class="btn btn-primary">Rent Now</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

@@ -9,5 +9,13 @@ namespace Car_Rental_web_App.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
+
+        public DbSet<Car> Cars { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Car>().Property(c => c.CarId).ValueGeneratedOnAdd();
+        }
     }
 }

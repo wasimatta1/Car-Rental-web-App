@@ -57,6 +57,8 @@ namespace Car_Rental_web_App
 
             app.MapDefaultControllerRoute();
 
+            DbInitializer.Seed(app);
+
             app.Run();
         }
     }

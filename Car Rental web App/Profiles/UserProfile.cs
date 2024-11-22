@@ -8,7 +8,8 @@ namespace Car_Rental_web_App.Profiles
     {
         public UserProfile()
         {
-            CreateMap<RegisterViewModel, User>();
+            CreateMap<RegisterViewModel, User>().ReverseMap();
+            CreateMap<UpdateViewModel, User>().ReverseMap();
         }
     }
 }

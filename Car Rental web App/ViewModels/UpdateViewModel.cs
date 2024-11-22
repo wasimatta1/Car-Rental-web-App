@@ -2,7 +2,7 @@
 
 namespace Car_Rental_web_App.ViewModels
 {
-    public class RegisterViewModel
+    public class UpdateViewModel
     {
         [Required(ErrorMessage = "FirstName is required.")]
         public string FirstName { get; set; }
@@ -18,20 +18,6 @@ namespace Car_Rental_web_App.ViewModels
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
-        ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, and one digit.")]
-        public string Password { get; set; }
-
-        [Required]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm Password")]
-        public string ConfirmPassword { get; set; }
-
 
         [Required(ErrorMessage = "Phone number is required.")]
         [Phone(ErrorMessage = "Invalid phone number format.")]

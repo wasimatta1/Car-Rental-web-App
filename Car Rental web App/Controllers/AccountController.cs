@@ -55,6 +55,7 @@ namespace Car_Rental_web_App.Controllers
             }
 
             HttpContext.Session.SetString("UserId", user.Id);
+            HttpContext.Session.SetString("Email", user.Email);
 
             return RedirectToAction("Index", "Home");
         }
@@ -178,6 +179,47 @@ namespace Car_Rental_web_App.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        public async Task<IActionResult> AccountSettings()
+        {
+            var email = HttpContext.Session.GetString("Email");
+            var user = await userManager.FindByEmailAsync(email);
+
+            return View(_mapper.Map<UpdateViewModel>(user));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccountSettings(UpdateViewModel updateUserViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(updateUserViewModel);
+            }
+
+            var userView = await userManager.FindByEmailAsync(updateUserViewModel.Email);
+
+            if (userView == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(updateUserViewModel);
+            }
+
+            _mapper.Map(updateUserViewModel, userView);
+
+            var result = await userManager.UpdateAsync(userView);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(updateUserViewModel);
+            }
+
+
+            return RedirectToAction("AccountSettings", "Account");
+        }
+
 
     }
 }

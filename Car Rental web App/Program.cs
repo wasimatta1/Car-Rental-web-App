@@ -35,6 +35,18 @@ namespace Car_Rental_web_App
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.Name = "CarRental.Session";
+                options.Cookie.IsEssential = true;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+            });
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
@@ -53,7 +65,22 @@ namespace Car_Rental_web_App
 
             app.UseRouting();
 
+
             app.UseAuthorization();
+
+            app.UseSession();
+
+            //Custom middleware to Logout the user if the session is gone
+            app.Use(async (context, next) =>
+            {
+                var userId = context.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId) && context.User.Identity.IsAuthenticated)
+                {
+                    var signInManager = context.RequestServices.GetRequiredService<SignInManager<User>>();
+                    await signInManager.SignOutAsync();
+                }
+                await next.Invoke();
+            });
 
             app.MapDefaultControllerRoute();
 

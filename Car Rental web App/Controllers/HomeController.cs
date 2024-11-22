@@ -13,12 +13,19 @@ namespace Car_Rental_web_App.Controllers
         }
         public IActionResult Index()
         {
+
             var cars = _context.Cars.ToList();
 
             return View(cars);
         }
-        [Authorize]
+
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult RentCar()
         {
             return View();
         }

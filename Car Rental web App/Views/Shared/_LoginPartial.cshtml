@@ -1,10 +1,10 @@
 ﻿@using Car_Rental_web_App.Models
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> signInManager;
-
+@inject IHttpContextAccessor HttpContextAccessor
 
 <ul class="navbar-nav ms-atou">
-    @if (signInManager.IsSignedIn(User))
+    @if (HttpContextAccessor.HttpContext.Session.GetString("UserId") != null)
     {
         <li>
             <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a> 

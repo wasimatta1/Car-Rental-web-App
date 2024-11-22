@@ -54,6 +54,8 @@ namespace Car_Rental_web_App.Controllers
                 return View(loginViewModel);
             }
 
+            HttpContext.Session.SetString("UserId", user.Id);
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -168,6 +170,8 @@ namespace Car_Rental_web_App.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
+
+            HttpContext.Session.Clear();
 
             return RedirectToAction("Index", "Home");
         }

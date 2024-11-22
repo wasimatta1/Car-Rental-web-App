@@ -220,6 +220,10 @@ namespace Car_Rental_web_App.Controllers
             return RedirectToAction("AccountSettings", "Account");
         }
 
-
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

@@ -12,9 +12,9 @@
 <div class="text-center mb-4">
     <h1 class="display-4">Welcome to Car Rental</h1>
 
-    @if (User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.Session.GetString("UserId") != null)
+    @if (User.Identity.IsAuthenticated)
     {
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") && HttpContextAccessor.HttpContext.Session.GetString("UserId") != null)
         {
             <h2 class="display-4 text-success">Admin Account</h2>
         }

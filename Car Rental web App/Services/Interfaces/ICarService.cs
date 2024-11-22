@@ -8,5 +8,7 @@ namespace Car_Rental_web_App.Services.Interfaces
 
         public Task<Car?> GetCarByIdAsync(int id);
         public Task UpdateCarAvailability(int carId, bool newState);
+
+        public Task<IEnumerable<Car>> SearchCarsAsync(string query);
     }
 }

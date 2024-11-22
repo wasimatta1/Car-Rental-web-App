@@ -22,6 +22,16 @@ namespace Car_Rental_web_App.Services.Implementations
             return await _context.Cars.FirstOrDefaultAsync(c => c.CarId == id);
         }
 
+        public async Task<IEnumerable<Car>> SearchCarsAsync(string query)
+        {
+            return await _context.Cars.Where(c => c.Location.Contains(query)
+            || c.Model.Contains(query)
+            || c.Make.Contains(query)
+            || c.PricePerDay.ToString().Contains(query)
+            || c.Year.ToString().Contains(query))
+                .ToListAsync();
+        }
+
         public async Task UpdateCarAvailability(int carId, bool newState)
         {
             var car = await _context.Cars.FirstOrDefaultAsync(c => c.CarId == carId);

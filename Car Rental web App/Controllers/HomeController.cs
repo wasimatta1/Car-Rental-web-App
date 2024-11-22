@@ -29,5 +29,12 @@ namespace Car_Rental_web_App.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
+        {
+            var cars = await _carService.SearchCarsAsync(query);
+
+            return View(cars);
+        }
     }
 }

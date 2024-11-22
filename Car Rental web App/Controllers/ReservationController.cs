@@ -27,6 +27,7 @@ namespace Car_Rental_web_App.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult RentCar(int carId)
         {
 
@@ -36,6 +37,7 @@ namespace Car_Rental_web_App.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> RentCar(ReservationViewModel reservationView)
         {
 

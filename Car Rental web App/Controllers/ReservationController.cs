@@ -80,10 +80,51 @@ namespace Car_Rental_web_App.Controllers
         public async Task<IActionResult> History()
         {
             var user = await userManager.GetUserAsync(User);
+
+            if (await userManager.IsInRoleAsync(user, "Admin"))
+            {
+                var allReservations = await _reservationService.GetReservations();
+                return View(allReservations);
+            }
             var reservations = await _reservationService.GetReservationsByUserIdAsync(user.Id);
 
             return View(reservations);
         }
+        public async Task<IActionResult> Manage()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            if (await userManager.IsInRoleAsync(user, "Admin"))
+            {
+                var allReservations = await _reservationService.GetActiveReservations();
+                return View(allReservations);
+            }
+            var reservations = await _reservationService.GetActiveReservationsByUserIdAsync(user.Id);
+
+            return View(reservations);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelReservation(int reservationId)
+        {
+            await _reservationService.CancelReservationAsync(reservationId);
+
+            return RedirectToAction("Manage", "Reservation");
+        }
+        [HttpPost]
+        public async Task<IActionResult> ReturnCar(int reservationId)
+        {
+            var reservation = await _reservationService.GetReservationByIdAsync(reservationId);
+
+            reservation!.Status = "Returned";
+
+            await _carService.UpdateCarAvailability(reservation.CarId, true);
+
+            await _reservationService.SaveChangesAsync();
+
+            return RedirectToAction("Manage", "Reservation");
+        }
+
 
     }
 }

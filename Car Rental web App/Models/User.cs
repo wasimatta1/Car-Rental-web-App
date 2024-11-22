@@ -12,6 +12,8 @@ namespace Car_Rental_web_App.Models
         public string City { get; set; }
         public string Country { get; set; }
         public string DriversLicenseNumber { get; set; }
+
+        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
     }
 
 

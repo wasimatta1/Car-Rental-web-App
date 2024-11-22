@@ -48,7 +48,7 @@
                         @if (car.IsAvailable)
                         {
                             <div class="text-center">
-                                <a asp-controller="Home" asp-action="RentCar" class="btn btn-primary btn-block">Rent Now</a>
+                                <a asp-controller="Reservation" asp-action="RentCar" asp-route-carId="@car.CarId" class="btn btn-primary btn-block">Rent Now</a>
                             </div>
                         }
                         else

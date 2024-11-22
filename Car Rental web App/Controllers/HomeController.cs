@@ -1,4 +1,4 @@
-﻿using Car_Rental_web_App.Data;
+﻿using Car_Rental_web_App.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,15 +6,15 @@ namespace Car_Rental_web_App.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppDbContext _context;
-        public HomeController(AppDbContext context)
+        private readonly ICarService _carService;
+        public HomeController(ICarService carService)
         {
-            _context = context;
+            _carService = carService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            var cars = _context.Cars.ToList();
+            var cars = await _carService.GetAllCarsAsync();
 
             return View(cars);
         }

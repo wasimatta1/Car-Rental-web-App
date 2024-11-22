@@ -12,10 +12,13 @@ namespace Car_Rental_web_App.Data
 
         public DbSet<Car> Cars { get; set; }
 
+        public DbSet<Reservation> Reservations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Car>().Property(c => c.CarId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Reservation>().Property(r => r.ReservationId).ValueGeneratedOnAdd();
         }
     }
 }

@@ -1,5 +1,7 @@
 using Car_Rental_web_App.Data;
 using Car_Rental_web_App.Models;
+using Car_Rental_web_App.Services.Implementations;
+using Car_Rental_web_App.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,7 +51,8 @@ namespace Car_Rental_web_App
             });
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            builder.Services.AddScoped<ICarService, CarService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
 
             var app = builder.Build();
 

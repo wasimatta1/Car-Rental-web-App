@@ -19,4 +19,5 @@ namespace Car_Rental_web_App.ViewModels
         public DateTime EndDate { get; set; }
 
     }
+
 }

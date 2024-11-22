@@ -7,7 +7,7 @@
     @if (HttpContextAccessor.HttpContext.Session.GetString("UserId") != null)
     {
         <li class="nav-item">
-            <a class="nav-link text-dark font-weight-bold text-info" asp-controller="Reservations" asp-action="History">
+            <a class="nav-link text-dark font-weight-bold text-info" asp-controller="Reservation" asp-action="History">
                 Reservation History
             </a>
         </li>

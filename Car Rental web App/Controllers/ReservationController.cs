@@ -11,7 +11,7 @@ namespace Car_Rental_web_App.Controllers
     [Authorize]
     public class ReservationController : Controller
     {
-        private readonly IReservationService reservationService;
+        private readonly IReservationService _reservationService;
         private readonly ICarService _carService;
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
@@ -20,7 +20,7 @@ namespace Car_Rental_web_App.Controllers
         public ReservationController(IReservationService reservationService, ICarService carService
             , SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper)
         {
-            this.reservationService = reservationService;
+            _reservationService = reservationService;
             _carService = carService;
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -66,7 +66,7 @@ namespace Car_Rental_web_App.Controllers
             reservation.Status = reservation.StartDate <= DateTime.Now ? "Active" : "Pending";
             reservation.TotalPrice = (reservation.EndDate - reservation.StartDate).Days * car!.PricePerDay;
 
-            await reservationService.CreateReservationAsync(reservation);
+            await _reservationService.CreateReservationAsync(reservation);
 
             if (reservation.Status.Equals("Active"))
             {
@@ -74,6 +74,15 @@ namespace Car_Rental_web_App.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+
+        public async Task<IActionResult> History()
+        {
+            var user = await userManager.GetUserAsync(User);
+            var reservations = await _reservationService.GetReservationsByUserIdAsync(user.Id);
+
+            return View(reservations);
         }
 
     }

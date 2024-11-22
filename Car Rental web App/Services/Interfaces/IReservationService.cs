@@ -6,5 +6,7 @@ namespace Car_Rental_web_App.Services.Interfaces
     {
         public Task CreateReservationAsync(Reservation reservation);
 
+        public Task<IEnumerable<Reservation>> GetReservationsByUserIdAsync(string userId);
+
     }
 }

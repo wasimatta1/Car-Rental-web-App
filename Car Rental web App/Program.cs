@@ -7,7 +7,7 @@ namespace Car_Rental_web_App
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +32,7 @@ namespace Car_Rental_web_App
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -83,6 +84,46 @@ namespace Car_Rental_web_App
             });
 
             app.MapDefaultControllerRoute();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManger = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roles = new string[] { "Admin", "User" };
+                foreach (var role in roles)
+                {
+                    if (!await roleManger.RoleExistsAsync(role))
+                    {
+                        await roleManger.CreateAsync(new IdentityRole(role));
+                    }
+                }
+            }
+
+            //create the admin user
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManger = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                var email = "admin@admin.com";
+                var password = "Admin123";
+
+                if (await userManger.FindByEmailAsync(email) == null)
+                {
+                    var user = new User
+                    {
+                        UserName = email,
+                        Email = email,
+                        FirstName = "Admin",
+                        LastName = "User",
+                        AddressLine1 = "123 Main St",
+                        City = "CityName",
+                        Country = "CountryName",
+                        DriversLicenseNumber = "D123456789"
+                    };
+
+                    await userManger.CreateAsync(user, password);
+
+                    await userManger.AddToRoleAsync(user, "Admin");
+                }
+            }
 
             DbInitializer.Seed(app);
 

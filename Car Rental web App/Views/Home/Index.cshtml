@@ -1,5 +1,10 @@
 ﻿@using Car_Rental_web_App.Models;
+@using Microsoft.AspNetCore.Identity;
 @model IEnumerable<Car>;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> userManger;
+
+
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,6 +12,10 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    @if (User.IsInRole("Admin"))
+    {
+        <h2 class="display-4">Admin Account</h2>
+    }
     <p>Browse our car collection:</p>
 </div>
 

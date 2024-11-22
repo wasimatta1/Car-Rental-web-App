@@ -24,7 +24,7 @@ namespace Car_Rental_web_App.Controllers
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "User")]
         public IActionResult RentCar()
         {
             return View();

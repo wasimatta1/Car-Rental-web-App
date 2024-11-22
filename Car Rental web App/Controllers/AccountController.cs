@@ -84,6 +84,9 @@ namespace Car_Rental_web_App.Controllers
                 }
                 return View(registerViewModel);
             }
+
+            await userManager.AddToRoleAsync(user, "User");
+
             return RedirectToAction("Login", "Account");
         }
 

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Car_Rental_web_App.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Manage Reservations";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Manage Reservations</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No reservations found.
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Car</th>
+                    <th>User</th>
+                    <th>Reservation Date</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Total Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@reservation.Car.Make @reservation.Car.Model</strong> <br />
+                            <small>@reservation.Car.Year - @reservation.Car.Location</small>
+                        </td>
+                        <td>
+                            @reservation.User.FirstName @reservation.User.LastName <br />
+                            <small>@reservation.User.Email</small>
+                        </td>
+                        <td>@reservation.ReservationDate.ToString("yyyy-MM-dd")</td>
+                        <td>@reservation.StartDate.ToString("yyyy-MM-dd")</td>
+                        <td>@reservation.EndDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <span class="badge @(reservation.Status == "Active" ? "bg-success" : "bg-warning")">
+                                @reservation.Status
+                            </span>
+                        </td>
+                        <td>@reservation.TotalPrice:C</td>
+                        <td>
+                            @if (reservation.Status == "Pending")
+                            {
+                                <form asp-controller="Reservation" asp-action="CancelReservation" method="post" class="d-inline">
+                                    <input type="hidden" name="reservationId" value="@reservation.ReservationId" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                                </form>
+                            }
+                            else if (reservation.Status == "Active")
+                            {
+                                <form asp-controller="Reservation" asp-action="ReturnCar" method="post" class="d-inline">
+                                    <input type="hidden" name="reservationId" value="@reservation.ReservationId" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Return</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

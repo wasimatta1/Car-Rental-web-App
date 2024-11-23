@@ -1,0 +1,38 @@
+﻿@using Car_Rental_web_App.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> signInManager;
+@inject IHttpContextAccessor HttpContextAccessor
+
+<ul class="navbar-nav ms-auto">
+    @if (HttpContextAccessor.HttpContext.Session.GetString("UserId") != null)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark font-weight-bold text-info" asp-controller="Reservation" asp-action="History">
+                Reservation History
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark font-weight-bold text-info" asp-controller="Reservation" asp-action="Manage">
+               Manage Reservation
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark font-weight-bold text-primary" asp-controller="Account" asp-action="AccountSettings">
+                Account Settings
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+    }
+</ul>
+

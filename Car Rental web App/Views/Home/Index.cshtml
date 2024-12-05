@@ -1,0 +1,66 @@
+﻿@using Car_Rental_web_App.Models;
+@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<Car>;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> userManger;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Welcome to Car Rental</h1>
+
+    @if (User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.Session.GetString("UserId") != null)
+    {
+        @if (User.IsInRole("Admin"))
+        {
+            <h2 class="display-4 text-success">Admin Account</h2>
+        }
+    }
+    else
+    {
+        <h2 class="display-4 text-warning">Please log in to access your account</h2>
+    }
+    <p class="lead">Browse our car collection and make a reservation today!</p>
+</div>
+
+<!-- Car Listing Section -->
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-light rounded">
+                    <img src="@car.ImageUrl" class="card-img-top" alt="@car.Model">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@car.Make @car.Model (@car.Year)</h5>
+                        <p class="card-text">@car.Description</p>
+                        <p class="card-text"><strong>Location:</strong> @car.Location</p>
+                        <p class="card-text"><strong>Price Per Day:</strong> $@car.PricePerDay</p>
+                        <p class="card-text">
+                            <strong>Status:</strong>
+                            <span class="badge @(car.IsAvailable ? "bg-success" : "bg-danger")">
+                                @(car.IsAvailable ? "Available" : "Not Available")
+                            </span>
+                        </p>
+
+                        @if (car.IsAvailable)
+                        {
+                            <div class="text-center">
+                                <a asp-controller="Reservation" asp-action="RentCar" asp-route-carId="@car.CarId" class="btn btn-primary btn-block">Rent Now</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center mt-2">
+                                <button class="btn btn-secondary btn-block" disabled>Currently Unavailable</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

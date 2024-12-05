@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Car_Rental_web_App.Pages
+namespace Car_Rental_web_App.Views.Home
 {
     public class IndexModel : PageModel
     {
